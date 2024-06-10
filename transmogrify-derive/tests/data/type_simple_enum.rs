@@ -1,5 +1,5 @@
 #[transmogrify(prefix = foo_crate)]
-enum SimpleEnum {
+pub enum SimpleEnum {
     A,
     B(),
     C(String),
