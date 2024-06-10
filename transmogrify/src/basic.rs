@@ -85,7 +85,7 @@ impl Transmogrify for String {
 }
 
 macro_rules! quote_impl {
-    ($ty:path) => {
+    ($ty:ident) => {
         impl Transmogrify for $ty {
             fn transmogrify(&self) -> proc_macro2::TokenStream {
                 quote! {
@@ -107,3 +107,29 @@ quote_impl!(u32);
 quote_impl!(u64);
 quote_impl!(f32);
 quote_impl!(f64);
+
+macro_rules! non_zero_impl {
+    ($ty:ty, $inner:ident) => {
+        impl Transmogrify for $ty {
+            fn transmogrify(&self) -> proc_macro2::TokenStream {
+                let value = self.get();
+                quote! {
+                    $ty::new(#value).unwrap()
+                }
+            }
+        }
+    };
+}
+
+non_zero_impl!(std::num::NonZeroU8, u8);
+non_zero_impl!(std::num::NonZeroU16, u16);
+non_zero_impl!(std::num::NonZeroU32, u32);
+non_zero_impl!(std::num::NonZeroU64, u64);
+non_zero_impl!(std::num::NonZeroU128, u128);
+non_zero_impl!(std::num::NonZeroUsize, usize);
+non_zero_impl!(std::num::NonZeroI8, i8);
+non_zero_impl!(std::num::NonZeroI16, i16);
+non_zero_impl!(std::num::NonZeroI32, i32);
+non_zero_impl!(std::num::NonZeroI64, i64);
+non_zero_impl!(std::num::NonZeroI128, i128);
+non_zero_impl!(std::num::NonZeroIsize, isize);

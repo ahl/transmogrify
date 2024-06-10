@@ -23,12 +23,14 @@ fn test_derive_struct() {
         pub a: String,
         pub b: Vec<u32>,
         pub time: chrono::DateTime<chrono::Utc>,
+        pub nz: std::num::NonZeroU8,
     }
 
     let value = TestStructNamed {
         a: "A".to_string(),
         b: vec![1, 2, 3],
         time: chrono::DateTime::<chrono::Utc>::from_timestamp(0, 0).unwrap(),
+        nz: 42.try_into().unwrap(),
     };
 
     test_value(value, "test_derive_struct");
