@@ -1,5 +1,5 @@
 #[transmogrify(prefix = foo_crate)]
-struct SimpleStruct {
+pub struct SimpleStruct {
     pub foo: String,
 }
 impl ::transmogrify::Transmogrify for SimpleStruct {

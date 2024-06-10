@@ -5,12 +5,14 @@ edition = "2021"
 license = "MIT OR Apache-2.0"
 
 [features]
-default = ["derive", "schemars", "json-value"]
+default = ["derive", "schemars", "json-value", "chrono"]
 derive = ["dep:transmogrify-derive"]
-schemars = ["json-value", "dep:schemars", "dep:transmogrify-macro"]
+chrono = ["dep:chrono"]
+schemars = ["dep:schemars", "dep:transmogrify-macro"]
 json-value = ["dep:serde_json", "dep:transmogrify-macro"]
 
 [dependencies]
+chrono = { workspace = true, optional = true }
 proc-macro2 = { workspace = true }
 quote = { workspace = true }
 schemars = { workspace = true, optional = true}

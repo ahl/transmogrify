@@ -3,6 +3,8 @@
 pub use transmogrify_derive::Transmogrify;
 
 mod basic;
+#[cfg(feature = "chrono")]
+mod chrono;
 #[cfg(feature = "schemars")]
 mod schemars;
 #[cfg(any(feature = "schemars", feature = "json_value"))]

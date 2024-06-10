@@ -70,13 +70,22 @@ fn do_transmogrify_derive(input: DeriveInput) -> syn::Result<TokenStream> {
     }
 
     // Do validation of the input types.
+    match &input.vis {
+        syn::Visibility::Public(_) => {}
+        _ => {
+            errors.push(syn::Error::new(
+                input.span(),
+                "the type must be pub for consumers to use Transmogrify output",
+            ));
+        }
+    }
     match &input.data {
         syn::Data::Struct(syn::DataStruct { fields, .. }) => {
             for field in fields {
                 match &field.vis {
-                    syn::Visibility::Public(_) => (),
+                    syn::Visibility::Public(_) => {}
                     _ => {
-                        errors.push(syn::Error::new(field.span(), "struct must be pub"));
+                        errors.push(syn::Error::new(field.span(), "struct fields must be pub"));
                     }
                 }
             }
@@ -259,7 +268,7 @@ mod tests {
     fn test_simple_struct() {
         type_tester(quote! {
             #[transmogrify(prefix = foo_crate)]
-            struct SimpleStruct {
+            pub struct SimpleStruct {
                 pub foo: String,
             }
         });
@@ -268,21 +277,21 @@ mod tests {
     fn test_empty_struct() {
         type_tester(quote! {
             #[transmogrify(prefix = foo_crate)]
-            struct EmptyStruct {}
+            pub struct EmptyStruct {}
         });
     }
     #[test]
     fn test_empty_struct_tuple() {
         type_tester(quote! {
             #[transmogrify(prefix = foo_crate)]
-            struct EmptyStructTuple();
+            pub struct EmptyStructTuple();
         });
     }
     #[test]
     fn test_marker_struct() {
         type_tester(quote! {
             #[transmogrify(prefix = foo_crate)]
-            struct MarkerStruct;
+            pub struct MarkerStruct;
         });
     }
 
@@ -290,7 +299,7 @@ mod tests {
     fn test_simple_enum() {
         type_tester(quote! {
             #[transmogrify(prefix = foo_crate)]
-            enum SimpleEnum {
+            pub enum SimpleEnum {
                 A,
                 B(),
                 C(String),
@@ -304,7 +313,7 @@ mod tests {
     #[test]
     fn test_error_no_attr() {
         type_tester(quote! {
-            struct ErrorNoAttr {}
+            pub struct ErrorNoAttr {}
         });
     }
 }

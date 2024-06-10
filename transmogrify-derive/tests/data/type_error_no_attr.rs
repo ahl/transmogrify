@@ -1,4 +1,4 @@
-struct ErrorNoAttr {}
+pub struct ErrorNoAttr {}
 ::core::compile_error! {
     "must specify a path prefix #[transmogrify(prefix = <path>)]"
 }

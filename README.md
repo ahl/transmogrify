@@ -28,7 +28,7 @@ pub struct MyStruct {
     // ...
 }
 
-let value = MyStruct{};
+let value = MyStruct {};
 let tokens: proc_macro2::TokenStream = value.transmogrify();
 ```
 
