@@ -1,0 +1,24 @@
+[package]
+name = "transmogrify"
+version = "0.1.0"
+edition = "2021"
+license = "MIT OR Apache-2.0"
+
+[features]
+default = ["derive", "schemars", "json-value"]
+derive = ["dep:transmogrify-derive"]
+schemars = ["json-value", "dep:schemars", "dep:transmogrify-macro"]
+json-value = ["dep:serde_json", "dep:transmogrify-macro"]
+
+[dependencies]
+proc-macro2 = { workspace = true }
+quote = { workspace = true }
+schemars = { workspace = true, optional = true}
+serde_json = { workspace = true, optional = true }
+transmogrify-derive = { workspace = true, optional = true }
+transmogrify-macro = { workspace = true, optional = true }
+
+[dev-dependencies]
+expectorate = { workspace = true }
+prettyplease = { workspace = true }
+syn = { workspace = true }
