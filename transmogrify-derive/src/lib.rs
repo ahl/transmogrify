@@ -142,7 +142,7 @@ fn do_transmogrify_derive(input: DeriveInput) -> syn::Result<TokenStream> {
                         .unzip();
                     quote! {
                         #(
-                            let #var = #transmogrify(&self.#index)
+                            let #var = #transmogrify(&self.#index);
                         )*
                         quote::quote! {
                             #prefix::#name (
@@ -273,6 +273,15 @@ mod tests {
             }
         });
     }
+
+    #[test]
+    fn test_tuple_struct() {
+        type_tester(quote! {
+            #[transmogrify(prefix = foo_crate)]
+            pub struct TupleStruct(pub String);
+        });
+    }
+
     #[test]
     fn test_empty_struct() {
         type_tester(quote! {
